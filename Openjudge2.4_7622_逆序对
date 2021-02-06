@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+int a[100010], n, k;
+int b[100010];
+long long ans;
+void merge(int low, int mid, int high){
+    int i = low, j = mid + 1, k = low;
+    while (i <= mid && j <= high){
+        if (a[i] < a[j]){//mid+1 ~ j-1均小于a[i]，直接构成逆序对
+            b[k ++] = a[i ++];
+            ans += (j - 1 - mid);//统计逆序对个数
+        }
+        else 
+            b[k ++] = a[j ++];
+    }
+    while (i <= mid){
+        b[k ++] = a[i ++];
+        ans += (j - 1 - mid);
+    }
+    while (j <= high)
+        b[k ++] = a[j ++];
+    for (i = low; i <= high; i ++)
+        a[i] = b[i];
+}
+void mergesort(int low, int high){
+    if (low >= high)return ;
+    int mid = (low + high) / 2;
+    mergesort(low, mid);
+    mergesort(mid + 1, high);
+    merge(low, mid, high);
+}
+int main(){
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i ++)
+        scanf("%d", &a[i]);
+    mergesort(1, n);
+    printf("%lld", ans);
+    return 0;
+}
+
+
+
+
+
