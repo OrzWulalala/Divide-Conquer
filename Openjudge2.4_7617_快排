@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+int a[100010], n, k;
+void quicksort(int t[], int low, int high){
+    if (low >= high)return ;
+    int temp = t[low], i = low, j = high;
+    //i左边的数字都比temp大
+    //j右边的数字都比temp小
+    while (i < j){
+        while (i < j && t[j] < temp)j --;
+        t[i] = t[j];//现在temp在a[j]的位置上
+        while (i < j && t[i] >= temp)i ++;
+        t[j] = t[i];//现在temp回到a[i]的位置上
+    }
+    t[i] = temp;
+    quicksort(t, low, i-1);
+    quicksort(t, i+1, high);
+}
+int main(){
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i ++)
+        scanf("%d", &a[i]);
+    scanf("%d", &k);
+    quicksort(a, 1, n);
+    for (int i = 1; i <= k; i ++)
+        printf("%d\n", a[i]);
+    return 0;
+}
+
